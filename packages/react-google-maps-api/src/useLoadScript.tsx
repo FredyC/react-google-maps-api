@@ -1,12 +1,12 @@
 import * as React from 'react'
 
-import { injectScript } from './utils/injectscript'
 import { preventGoogleFonts } from './utils/prevent-google-fonts'
 
 import { isBrowser } from './utils/isbrowser'
 import { defaultLoadScriptProps } from './LoadScript'
 import invariant from 'invariant';
 import { makeLoadScriptUrl, LoadScriptUrlOptions } from './utils/make-load-script-url';
+import scriptjs from 'scriptjs'
 
 export interface UseLoadScriptOptions extends LoadScriptUrlOptions {
   id?: string
@@ -27,7 +27,6 @@ export function useLoadScript({
 }: UseLoadScriptOptions) {
   const isMounted = React.useRef(false)
   const [isLoaded, setLoaded] = React.useState(false)
-  const [loadError, setLoadError] = React.useState<Error | undefined>(undefined)
 
   React.useEffect(function trackMountedState() {
     isMounted.current = true
@@ -67,18 +66,7 @@ export function useLoadScript({
       return
     }
 
-    injectScript({ id, url })
-      .then(setLoadedIfMounted)
-      .catch(function handleInjectError(err) {
-        if (isMounted.current) {
-          setLoadError(err)
-        }
-        console.warn(`
-        There has been an Error with loading Google Maps API script, please check that you provided correct google API key (${googleMapsApiKey || '-'}) or Client ID (${googleMapsClientId || '-'})
-        Otherwise it is a Network issue.
-      `)
-        console.error(err)
-      })
+    scriptjs(url, id, setLoadedIfMounted)
   }, [id, url])
 
   const prevLibraries = React.useRef<undefined | string[]>()
@@ -92,5 +80,5 @@ export function useLoadScript({
     prevLibraries.current = libraries
   }, [libraries])
 
-  return { isLoaded, loadError, url }
+  return { isLoaded, url }
 }

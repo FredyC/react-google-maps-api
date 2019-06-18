@@ -83,7 +83,8 @@
   },
   "dependencies": {
     "@react-google-maps/marker-clusterer": "1.2.6",
-    "invariant": "2.2.4"
+    "invariant": "2.2.4",
+    "scriptjs": "2.5.9"
   },
   "peerDependencies": {
     "react": "^16.6.3",
@@ -97,6 +98,7 @@
     "@types/invariant": "2.2.29",
     "@types/jest": "24.0.13",
     "@types/react-dom": "16.8.4",
+    "@types/scriptjs": "0.0.2",
     "@typescript-eslint/eslint-plugin": "1.9.0",
     "@typescript-eslint/parser": "1.9.0",
     "acorn": "6.1.1",
